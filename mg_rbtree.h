@@ -9,48 +9,47 @@
 #define __MG_RBTREE_INCLUDE__
 
 #include "mg_config.h"
-#include "mg_core.h"
 
 #define RBREDNODE 0
 #define RBBLACKNODE 1
 
-typedef struct mg_rb_node {
+struct mg_rb_node {
     mg_uint8_t _type;
 
     struct mg_rb_node* _parent;
     struct mg_rb_node* _lchild;
     struct mg_rb_node* _rchild;
-} mg_rb_node_t;
+};
 
 // return
 // = 0: l = r
 // > 0: l < r
 // < 0: l > r
-typedef mg_int32_t (*mg_rb_node_compare)(mg_rb_node_t* l, mg_rb_node_t* r);
+typedef mg_int32_t (*mg_rb_node_compare)(struct mg_rb_node* l, struct mg_rb_node* r);
 
-typedef struct mg_rbtree {
+struct mg_rbtree {
     mg_int32_t _count;
     mg_rb_node_compare _compare;
 
-    mg_rb_node_t* _root;
-} mg_rbtree_t;
+    struct mg_rb_node* _root;
+};
 
-mg_bool_t rb_node_is_red(mg_rb_node_t* node);
-mg_bool_t rb_node_is_black(mg_rb_node_t* node);
+mg_bool_t rb_node_is_red(struct mg_rb_node* node);
+mg_bool_t rb_node_is_black(struct mg_rb_node* node);
 
-void init_rb_node(mg_rb_node_t* rbnode);
-void init_rb_tree(mg_rbtree_t* rbtree, mg_rb_node_compare compare);
+void init_rb_node(struct mg_rb_node* rbnode);
+void init_rb_tree(struct mg_rbtree* rbtree, mg_rb_node_compare compare);
 
-mg_rb_node_t* search_rb_node(mg_rb_node_t* node, mg_rbtree_t* tree, mg_bool_t insert_position);
-void change_rb_node(mg_rb_node_t* n1, mg_rb_node_t* n2, mg_rbtree_t* tree, mg_bool_t change_type);
-void insert_rb_node(mg_rb_node_t* node, mg_rbtree_t* tree);
-void delete_rb_node(mg_rb_node_t* dnode, mg_rbtree_t* tree);
+struct mg_rb_node* search_rb_node(struct mg_rb_node* node, struct mg_rbtree* tree, mg_bool_t insert_position);
+void change_rb_node(struct mg_rb_node* n1, struct mg_rb_node* n2, struct mg_rbtree* tree, mg_bool_t change_type);
+void insert_rb_node(struct mg_rb_node* node, struct mg_rbtree* tree);
+void delete_rb_node(struct mg_rb_node* dnode, struct mg_rbtree* tree);
 
-void left_rotate(mg_rb_node_t* node, mg_rbtree_t* tree);
-void right_rotate(mg_rb_node_t* node, mg_rbtree_t* tree);
+void left_rotate(struct mg_rb_node* node, struct mg_rbtree* tree);
+void right_rotate(struct mg_rb_node* node, struct mg_rbtree* tree);
 
-void delete_leaf_node(mg_rb_node_t* leaf, mg_rbtree_t* tree);
-mg_rb_node_t* find_right_replace_node(mg_rb_node_t* n);
+void delete_leaf_node(struct mg_rb_node* leaf, struct mg_rbtree* tree);
+struct mg_rb_node* find_right_replace_node(struct mg_rb_node* n);
 
 #define MG_RBTREE_INIT_TREE(t, cmp) init_rb_tree(t, cmp)
 #define MG_RBTREE_INIT_NODE(n) init_rb_node(n)

@@ -9,29 +9,29 @@
 
 #include "mg_rbtree.h"
 
-mg_bool_t rb_node_is_red(mg_rb_node_t* node) {
+mg_bool_t rb_node_is_red(struct mg_rb_node* node) {
     return node->_type == RBREDNODE;
 }
 
-mg_bool_t rb_node_is_black(mg_rb_node_t* node) {
+mg_bool_t rb_node_is_black(struct mg_rb_node* node) {
     return node->_type == RBBLACKNODE;
 }
 
-void init_rb_node(mg_rb_node_t* rbnode) {
+void init_rb_node(struct mg_rb_node* rbnode) {
     rbnode->_type = RBREDNODE;
     rbnode->_parent = rbnode->_lchild = rbnode->_rchild = nullptr;
 }
 
-void init_rb_tree(mg_rbtree_t* rbtree,
+void init_rb_tree(struct mg_rbtree* rbtree,
                                 mg_rb_node_compare compare) {
     rbtree->_count = 0;
     rbtree->_compare = compare;
     rbtree->_root = nullptr;
 }
 
-mg_rb_node_t* search_rb_node(mg_rb_node_t* node, mg_rbtree_t* tree,
+struct mg_rb_node* search_rb_node(struct mg_rb_node* node, struct mg_rbtree* tree,
                                          mg_bool_t insert_position) {
-    mg_rb_node_t* p = tree->_root;
+    struct mg_rb_node* p = tree->_root;
     while (p != nullptr) {
         mg_int_t ret = tree->_compare(node, p);
         if (ret > 0) {
@@ -53,9 +53,9 @@ mg_rb_node_t* search_rb_node(mg_rb_node_t* node, mg_rbtree_t* tree,
 //                  /x  \                /  \
 //            rlchild   rrchild      lchild  rlchild
 //
-void left_rotate(mg_rb_node_t* node, mg_rbtree_t* tree) {
-    mg_rb_node_t* p = node->_parent;
-    mg_rb_node_t* rchild = node->_rchild;
+void left_rotate(struct mg_rb_node* node, struct mg_rbtree* tree) {
+    struct mg_rb_node* p = node->_parent;
+    struct mg_rb_node* rchild = node->_rchild;
 
     if (rchild->_lchild != nullptr) rchild->_lchild->_parent = node;
 
@@ -81,9 +81,9 @@ void left_rotate(mg_rb_node_t* node, mg_rbtree_t* tree) {
 //         /   \x                               /  \
 //   llchild   lrchild                   lrchild  rchild
 //
-void right_rotate(mg_rb_node_t* node, mg_rbtree_t* tree) {
-    mg_rb_node_t* p = node->_parent;
-    mg_rb_node_t* lchild = node->_lchild;
+void right_rotate(struct mg_rb_node* node, struct mg_rbtree* tree) {
+    struct mg_rb_node* p = node->_parent;
+    struct mg_rb_node* lchild = node->_lchild;
 
     if (lchild->_rchild != nullptr) lchild->_rchild->_parent = node;
 
@@ -102,13 +102,13 @@ void right_rotate(mg_rb_node_t* node, mg_rbtree_t* tree) {
     node->_parent = lchild;
 }
 
-void delete_leaf_node(mg_rb_node_t* leaf, mg_rbtree_t* tree) {
+void delete_leaf_node(struct mg_rb_node* leaf, struct mg_rbtree* tree) {
     if (leaf == tree->_root) {
         tree->_root = nullptr;
         return;
     }
 
-    mg_rb_node_t* p = leaf->_parent;
+    struct mg_rb_node* p = leaf->_parent;
     if (p->_lchild == leaf) {
         p->_lchild = nullptr;
     } else {
@@ -117,13 +117,13 @@ void delete_leaf_node(mg_rb_node_t* leaf, mg_rbtree_t* tree) {
 }
 
 // n1 is higher than n2
-void change_rb_node(mg_rb_node_t* n1, mg_rb_node_t* n2,
-                                  mg_rbtree_t* tree, mg_bool_t change_type) {
+void change_rb_node(struct mg_rb_node* n1, struct mg_rb_node* n2,
+                                  struct mg_rbtree* tree, mg_bool_t change_type) {
     if (n1 == n2) return;
-    mg_rb_node_t* n1p = n1->_parent;
-    mg_rb_node_t* n2p = n2->_parent;
+    struct mg_rb_node* n1p = n1->_parent;
+    struct mg_rb_node* n2p = n2->_parent;
 
-    mg_rb_node_t* tmp;
+    struct mg_rb_node* tmp;
 
     tmp = n1->_lchild;
     n1->_lchild = n2->_lchild;
@@ -159,16 +159,16 @@ void change_rb_node(mg_rb_node_t* n1, mg_rb_node_t* n2,
     }
 }
 
-mg_rb_node_t* find_right_replace_node(mg_rb_node_t* n) {
-    mg_rb_node_t* r = n->_rchild;
+struct mg_rb_node* find_right_replace_node(struct mg_rb_node* n) {
+    struct mg_rb_node* r = n->_rchild;
     while (r->_lchild != nullptr) {
         r = r->_lchild;
     }
     return r;
 }
 
-void insert_rb_node(mg_rb_node_t* node, mg_rbtree_t* tree) {
-    mg_rb_node_t* p = search_rb_node(node, tree, true);
+void insert_rb_node(struct mg_rb_node* node, struct mg_rbtree* tree) {
+    struct mg_rb_node* p = search_rb_node(node, tree, true);
     if (p == nullptr) {
         tree->_root = node;
         tree->_root->_type = RBBLACKNODE;
@@ -186,8 +186,8 @@ void insert_rb_node(mg_rb_node_t* node, mg_rbtree_t* tree) {
     }
 
     tree->_count++;
-    mg_rb_node_t* u = nullptr;
-    mg_rb_node_t* pp = nullptr;
+    struct mg_rb_node* u = nullptr;
+    struct mg_rb_node* pp = nullptr;
     while ((p = node->_parent) && rb_node_is_red(p)) {
         pp = p->_parent;
         u = node == p->_rchild ? pp->_lchild : pp->_rchild;
@@ -248,12 +248,12 @@ void insert_rb_node(mg_rb_node_t* node, mg_rbtree_t* tree) {
     tree->_root->_type = RBBLACKNODE;
 }
 
-void delete_rb_node(mg_rb_node_t* dnode, mg_rbtree_t* tree) {
-    mg_rb_node_t* d = search_rb_node(dnode, tree, false);
+void delete_rb_node(struct mg_rb_node* dnode, struct mg_rbtree* tree) {
+    struct mg_rb_node* d = search_rb_node(dnode, tree, false);
     if (d == nullptr) return;
 
     if (d->_lchild != nullptr && d->_rchild != nullptr) {
-        mg_rb_node_t* r = find_right_replace_node(d);
+        struct mg_rb_node* r = find_right_replace_node(d);
         change_rb_node(d, r, tree, true);
     }
 
@@ -280,9 +280,9 @@ void delete_rb_node(mg_rb_node_t* dnode, mg_rbtree_t* tree) {
     // 第三步：兄弟节点的子节点存在红色节点，那么把这个红色节点借过来，保证黑色节点删除之后黑高不变。
 
     // delete node is black, dont have leaf
-    mg_rb_node_t* p = d->_parent;
-    mg_rb_node_t* b = nullptr;
-    mg_rb_node_t* node = d;
+    struct mg_rb_node* p = d->_parent;
+    struct mg_rb_node* b = nullptr;
+    struct mg_rb_node* node = d;
     while ((node && rb_node_is_black(node)) && node != tree->_root) {
         if (p->_lchild == node) {
             b = p->_rchild;

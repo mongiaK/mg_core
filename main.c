@@ -7,13 +7,12 @@
 *  
 ================================================================*/
 
-#include "mg_config.h"
 #include "mg_core.h"
 
 int main(int argc, char * argv[])
 {
     mg_uint32_t i = 0;
- 
+
     log_init(NULL, LOG_DEBUG);
 
     mglog_info("helloworld");

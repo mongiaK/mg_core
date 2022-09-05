@@ -8,11 +8,7 @@
 ================================================================*/
 
 #include "mg_log.h"
-
-#include <string.h>
-#include <stdio.h>
-#include <stdarg.h>
-#include <stdlib.h>
+#include "mg_core.h"
 
 #define MAX_LOG_FILENAME    4096
 #define LOG_CHECK(x)    \

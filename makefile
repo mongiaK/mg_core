@@ -1,8 +1,8 @@
-target:=mg_lib
+target:=mghello
 
 CXX:=clang
 
-INCS=
+INCS=-I os/linux -I os
 CFLAGS=-g -Wall -O3
 LIBS=
 OBJ_DIR=obj

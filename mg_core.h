@@ -9,31 +9,23 @@
 #ifndef __MG_CORE_INCLUDE_H__
 #define __MG_CORE_INCLUDE_H__
 
-#include "mg_config.h"
-
-typedef int mg_int_t;
-typedef int32_t mg_int32_t;
-typedef uint32_t mg_uint32_t;
-typedef int64_t mg_int64_t;
-typedef uint64_t mg_uint64_t;
-typedef double mg_double_t;
-typedef float mg_float_t;
-typedef int8_t mg_int8_t;
-typedef uint8_t mg_uint8_t;
-typedef int16_t mg_int16_t;
-typedef uint16_t mg_uint16_t;
-typedef uint8_t mg_bool_t;
-typedef char mg_char_t;
-typedef unsigned long long mg_time_t;
-typedef struct tm mg_tm_t;
-
-typedef int32_t mg_atomic_int_t;
-typedef uint32_t mg_atomic_uint_t;
-typedef volatile mg_atomic_uint_t mg_atomic_t;
-
+// no other reference
+#include "mg_time.h"
 #include "mg_list.h"
 #include "mg_rbtree.h"
-
 #include "mg_log.h"
+
+// no other reference
+typedef struct mg_list mg_list_t;
+typedef struct mg_rb_node mg_rb_node_t;
+typedef struct mg_rbtree mg_rbtree_t;
+
+// have front reference
+#include "mg_pool.h"
+#include "mg_skiplist.h"
+
+typedef struct mg_pool mg_pool_t;
+typedef struct mg_skiplist_node mg_skiplist_node_t;
+typedef struct mg_skiplist mg_skiplist_t;
 
 #endif

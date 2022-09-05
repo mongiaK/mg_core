@@ -9,7 +9,6 @@
 #define __MG_LOG_INCLUDE_H__
 
 #include "mg_config.h"
-#include "mg_core.h"
 
 #define NONE            "\033[m"
 #define RED             "\033[0;32;31m"

@@ -9,26 +9,26 @@
 
 #include "mg_list.h"
 
-void init_list(mg_list_t* l) {
+void init_list(struct mg_list* l) {
     l->_next = l;
     l->_prev = l;
 }
 
-void insert_list_front(mg_list_t* e, mg_list_t* l) {
+void insert_list_front(struct mg_list* e, struct mg_list* l) {
     e->_next = l;
     e->_prev = l->_prev;
     l->_prev->_next = e;
     l->_prev = e;
 }
 
-void insert_list_end(mg_list_t* e, mg_list_t* l) {
+void insert_list_end(struct mg_list* e, struct mg_list* l) {
     e->_next = l->_next;
     e->_prev = l;
     l->_next->_prev = e;
     l->_next = e;
 }
 
-void remove_list_node(mg_list_t* e, mg_bool_t cleanup) {
+void remove_list_node(struct mg_list* e, mg_bool_t cleanup) {
     e->_prev->_next = e->_next;
     e->_next->_prev = e->_prev;
 
@@ -37,6 +37,6 @@ void remove_list_node(mg_list_t* e, mg_bool_t cleanup) {
     }
 }
 
-mg_list_t* list_head(mg_list_t* l) { return l->_next; }
+struct mg_list* list_head(struct mg_list* l) { return l->_next; }
 
-mg_list_t* list_tail(mg_list_t* l) { return l->_prev; }
+struct mg_list* list_tail(struct mg_list* l) { return l->_prev; }

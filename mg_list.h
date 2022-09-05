@@ -11,19 +11,18 @@
 #define __MG_LIST_INCLUDE_H__
 
 #include "mg_config.h"
-#include "mg_core.h"
 
-typedef struct mg_list {
+struct mg_list {
     struct mg_list* _prev;
     struct mg_list* _next;
-} mg_list_t ;
+};
 
-void init_list(mg_list_t* l);
-void insert_list_front(mg_list_t* e, mg_list_t* l);
-void insert_list_end(mg_list_t* e, mg_list_t* l);
-void remove_list_node(mg_list_t* e, mg_bool_t cleanup);
-mg_list_t* list_head(mg_list_t* l);
-mg_list_t* list_tail(mg_list_t* l);
+void init_list(struct mg_list* l);
+void insert_list_front(struct mg_list* e, struct mg_list* l);
+void insert_list_end(struct mg_list* e, struct mg_list* l);
+void remove_list_node(struct mg_list* e, mg_bool_t cleanup);
+struct mg_list* list_head(struct mg_list* l);
+struct mg_list* list_tail(struct mg_list* l);
 
 #define MG_LIST_INIT(l) init_list(l)
 #define MG_LIST_EMPTY(l) ((l) == (l)->_prev)
