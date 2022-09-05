@@ -18,17 +18,12 @@ typedef struct mg_list {
     struct mg_list* _next;
 } mg_list_t ;
 
-static inline void init_list(mg_list_t* l);
-
-static inline void insert_list_front(mg_list_t* e, mg_list_t* l);
-
-static inline void insert_list_end(mg_list_t* e, mg_list_t* l);
-
-static inline void remove_list_node(mg_list_t* e, mg_bool_t cleanup);
-
-static inline mg_list_t* list_head(mg_list_t* l);
-
-static inline mg_list_t* list_tail(mg_list_t* l);
+void init_list(mg_list_t* l);
+void insert_list_front(mg_list_t* e, mg_list_t* l);
+void insert_list_end(mg_list_t* e, mg_list_t* l);
+void remove_list_node(mg_list_t* e, mg_bool_t cleanup);
+mg_list_t* list_head(mg_list_t* l);
+mg_list_t* list_tail(mg_list_t* l);
 
 #define MG_LIST_INIT(l) init_list(l)
 #define MG_LIST_EMPTY(l) ((l) == (l)->_prev)

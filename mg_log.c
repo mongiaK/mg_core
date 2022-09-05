@@ -27,11 +27,15 @@ static mg_int_t glog_level = LOG_DEBUG;
 static mg_int_t glog_level = LOG_WARN;
 #endif
 
-static inline mg_int_t log_init(mg_char_t* filename, mg_int_t level) {
+mg_int_t log_init(mg_char_t* filename, mg_uint32_t level) {
+    mg_assert(level < LOG_MAX);
+
+    glog_level = level;
     if (NULL == filename) {
         glogfp = stdout;
         return 0;
     }
+
     FILE* fp;
     mg_int_t n, length;
 
@@ -53,22 +57,21 @@ static inline mg_int_t log_init(mg_char_t* filename, mg_int_t level) {
     glog_filename[n] = '\0';
 
     glogfp = fp;
-    glog_level = level;
 
     return 0;
 }
 
-static inline void log_uninit() {
+void log_uninit() {
     if (NULL != glogfp && stdout != glogfp) {
         fclose(glogfp);
     }
 }
 
-static inline void log_doit(FILE* fp, mg_char_t* fmt, va_list ap) {
+void log_doit(FILE* fp, mg_char_t* fmt, va_list ap) {
     fprintf(fp, fmt, ap);
 }
 
-static inline void log_debug(mg_char_t* fmt, ...) {
+void log_debug(mg_char_t* fmt, ...) {
     LOG_CHECK(LOG_DEBUG);
 
     va_list ap;
@@ -77,7 +80,7 @@ static inline void log_debug(mg_char_t* fmt, ...) {
     va_end(ap);
 }
 
-static inline void log_info(mg_char_t* fmt, ...) {
+void log_info(mg_char_t* fmt, ...) {
     LOG_CHECK(LOG_INFO);
 
     va_list ap;
@@ -86,7 +89,7 @@ static inline void log_info(mg_char_t* fmt, ...) {
     va_end(ap);
 }
 
-static inline void log_warning(mg_char_t* fmt, ...) {
+void log_warning(mg_char_t* fmt, ...) {
     LOG_CHECK(LOG_WARN);
 
     va_list ap;
@@ -95,7 +98,7 @@ static inline void log_warning(mg_char_t* fmt, ...) {
     va_end(ap);
 }
 
-static inline void log_error(mg_char_t* fmt, ...) {
+void log_error(mg_char_t* fmt, ...) {
     LOG_CHECK(LOG_ERROR);
 
     va_list ap;
@@ -104,7 +107,7 @@ static inline void log_error(mg_char_t* fmt, ...) {
     va_end(ap);
 }
 
-static inline void log_fatal(mg_char_t* fmt, ...) {
+void log_fatal(mg_char_t* fmt, ...) {
     LOG_CHECK(LOG_FATAL);
 
     va_list ap;
@@ -114,7 +117,7 @@ static inline void log_fatal(mg_char_t* fmt, ...) {
     exit(1);
 }
 
-static inline void log_dump(mg_char_t* fmt, ...) {
+void log_dump(mg_char_t* fmt, ...) {
     LOG_CHECK(LOG_DUMP);
 
     va_list ap;

@@ -26,6 +26,7 @@
 #include <dirent.h>
 #include <glob.h>
 // #include <sys/vfs.h>            /* statfs() */
+#include <assert.h>
 
 #include <sys/uio.h>
 #include <sys/stat.h>

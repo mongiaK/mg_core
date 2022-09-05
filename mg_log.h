@@ -41,29 +41,30 @@ enum {
     LOG_WARN = 3,
     LOG_INFO = 4,
     LOG_DEBUG = 5,
+    LOG_MAX,
 };
 
 // return val
 // 1: filename length great than max length
 // 2: loglevel error
 // 3: file open error
-static inline mg_int_t log_init(mg_char_t* filename, mg_int_t level);
+mg_int_t log_init(mg_char_t* filename, mg_uint32_t level);
 
-static inline void log_uninit();
+void log_uninit();
 
-static inline void log_doit(FILE* fp, mg_char_t* fmt, va_list ap);
+void log_doit(FILE* fp, mg_char_t* fmt, va_list ap);
 
-static inline void log_debug(mg_char_t* fmt, ...);
+void log_debug(mg_char_t* fmt, ...);
 
-static inline void log_info(mg_char_t* fmt, ...);
+void log_info(mg_char_t* fmt, ...);
 
-static inline void log_warning(mg_char_t* fmt, ...);
+void log_warning(mg_char_t* fmt, ...);
 
-static inline void log_error(mg_char_t* fmt, ...);
+void log_error(mg_char_t* fmt, ...);
 
-static inline void log_fatal(mg_char_t* fmt, ...);
+void log_fatal(mg_char_t* fmt, ...);
 
-static inline void log_dump(mg_char_t* fmt, ...);
+void log_dump(mg_char_t* fmt, ...);
 
 #define mglog_debug(fmt, ...)     \
     log_debug(fmt, ##__VA_ARGS__)
